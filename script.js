@@ -298,7 +298,7 @@ class BridgePageController {
     }
 
     initCounters() {
-        const counters = document.querySelectorAll('.counter-number');
+        const counters = document.querySelectorAll('.counter-number:not(.rating-display)');
         
         const animateCounter = (counter) => {
             const target = parseInt(counter.textContent.replace(/[^\d]/g, ''));
