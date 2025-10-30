@@ -435,9 +435,9 @@ class BridgePageController {
         
         popupContent.innerHTML = `
             <button style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">×</button>
-            <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 24px;">Wait! Don't Miss Out!</h3>
-            <p style="color: #666; margin-bottom: 30px; font-size: 16px;">Get an exclusive 20% discount on Mitolyn - Limited time offer!</p>
-            <button style="background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); border: none; padding: 15px 30px; border-radius: 50px; color: white; font-weight: 700; cursor: pointer; font-size: 16px;">Claim My Discount Now!</button>
+            <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 24px;">Interested in Learning More?</h3>
+            <p style="color: #666; margin-bottom: 30px; font-size: 16px;">Get access to the complete research presentation about mitochondrial health and cellular energy.</p>
+            <button style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); border: none; padding: 15px 30px; border-radius: 50px; color: white; font-weight: 700; cursor: pointer; font-size: 16px;">Watch Full Presentation</button>
         `;
         
         popup.appendChild(popupContent);
@@ -718,14 +718,14 @@ window.addEventListener('load', () => {
         });
     }, 30000);
     
-    // Show special offer after 2 minutes
+    // Show educational reminder after 2 minutes
     setTimeout(() => {
-        const specialOffer = document.createElement('div');
-        specialOffer.style.cssText = `
+        const educationalReminder = document.createElement('div');
+        educationalReminder.style.cssText = `
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
             color: white;
             padding: 15px 20px;
             border-radius: 10px;
@@ -735,23 +735,23 @@ window.addEventListener('load', () => {
             animation: bounceIn 0.8s ease-out;
             max-width: 300px;
         `;
-        specialOffer.innerHTML = `
-            <div style="font-weight: 700; margin-bottom: 5px;">🔥 Special Offer!</div>
-            <div style="font-size: 14px;">Limited time: Extra 15% off your order!</div>
+        educationalReminder.innerHTML = `
+            <div style="font-weight: 700; margin-bottom: 5px;">📚 Learn More</div>
+            <div style="font-size: 14px;">Discover the complete research on mitochondrial health</div>
         `;
         
-        specialOffer.addEventListener('click', () => {
+        educationalReminder.addEventListener('click', () => {
             window.open('https://c08cbrnlojkt9w8hnnua976x62.hop.clickbank.net', '_blank');
-            specialOffer.remove();
+            educationalReminder.remove();
         });
         
-        document.body.appendChild(specialOffer);
+        document.body.appendChild(educationalReminder);
         
         // Auto-remove after 15 seconds
         setTimeout(() => {
-            if (specialOffer.parentNode) {
-                specialOffer.style.animation = 'slideInFromBottom 0.5s ease-out reverse';
-                setTimeout(() => specialOffer.remove(), 500);
+            if (educationalReminder.parentNode) {
+                educationalReminder.style.animation = 'slideInFromBottom 0.5s ease-out reverse';
+                setTimeout(() => educationalReminder.remove(), 500);
             }
         }, 15000);
     }, 120000);
@@ -782,4 +782,109 @@ if (window.innerWidth <= 768) {
         `;
         document.head.appendChild(mobileStyle);
     });
+}
+
+// Scroll Functions for Bridge Page Navigation
+function scrollToEducation() {
+    const target = document.getElementById('learn-more');
+    if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+function scrollToDiscovery() {
+    const target = document.getElementById('video-section');
+    if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+// Email Capture Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const emailForm = document.getElementById('emailCaptureForm');
+    const emailInput = document.getElementById('emailInput');
+    
+    if (emailForm && emailInput) {
+        emailForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showEmailMessage('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Store email for retargeting (in real implementation, send to your email service)
+            localStorage.setItem('capturedEmail', email);
+            
+            // Show success message
+            showEmailMessage('Thank you! You\'ll receive research updates soon.', 'success');
+            
+            // Clear form
+            emailInput.value = '';
+            
+            // Track conversion for retargeting
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'email_capture', {
+                    'event_category': 'lead_generation',
+                    'event_label': 'bridge_page_signup'
+                });
+            }
+            
+            // Set retargeting pixel (placeholder for actual implementation)
+            setRetargetingPixel(email);
+        });
+    }
+});
+
+function showEmailMessage(message, type) {
+    const existingMessage = document.querySelector('.email-message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `email-message ${type}`;
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        z-index: 10000;
+        animation: slideInFromRight 0.3s ease-out;
+        max-width: 300px;
+        ${type === 'success' ? 'background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);' : 'background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);'}
+    `;
+    messageDiv.textContent = message;
+    
+    document.body.appendChild(messageDiv);
+    
+    setTimeout(() => {
+        messageDiv.style.animation = 'slideInFromRight 0.3s ease-out reverse';
+        setTimeout(() => messageDiv.remove(), 300);
+    }, 3000);
+}
+
+function setRetargetingPixel(email) {
+    // Placeholder for retargeting pixel implementation
+    // In a real implementation, you would:
+    // 1. Send email to your email service provider (Mailchimp, ConvertKit, etc.)
+    // 2. Set Facebook/Google retargeting pixels
+    // 3. Add user to custom audiences
+    
+    console.log('Retargeting pixel set for:', email);
+    
+    // Example Facebook Pixel event (replace with your actual pixel ID)
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'Lead', {
+            content_name: 'Mitochondria Research Signup',
+            content_category: 'Email Capture'
+        });
+    }
 }
