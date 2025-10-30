@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://mitolyn.com/sitemap.xml
+Sitemap: https://mitobreakthrough.com/sitemap.xml
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
